@@ -14,9 +14,9 @@ namespace Core.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
-        public string userName { get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; }
-        public string Phone_No { get; set; }
+        public string PhoneNo { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public ICollection<Booking> Booking { get; set; }

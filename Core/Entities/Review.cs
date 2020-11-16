@@ -17,6 +17,6 @@ namespace Core.Entities
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public ICollection<ReviewType> Reviews { get; set; }
-
+        public OrderPlaced OrdersPlaced { get; set; }
     }
 }

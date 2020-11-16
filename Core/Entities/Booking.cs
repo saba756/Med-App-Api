@@ -20,5 +20,6 @@ namespace Core.Entities
         public string CustomerAddress { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+        public OrderPlaced OrdersPlaced { get; set; }
     }
 }

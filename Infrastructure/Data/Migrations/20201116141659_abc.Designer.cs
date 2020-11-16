@@ -3,14 +3,16 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201116141659_abc")]
+    partial class abc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,9 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CarrierId")
                         .HasColumnType("int");
 
                     b.Property<string>("CustomerAddress")
@@ -45,6 +50,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarrierId");
 
                     b.HasIndex("CustomerId");
 
@@ -149,9 +156,6 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId")
-                        .IsUnique();
-
                     b.HasIndex("CarrierId");
 
                     b.ToTable("orderPlaceds");
@@ -247,6 +251,10 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Booking", b =>
                 {
+                    b.HasOne("Core.Entities.Carrier", null)
+                        .WithMany("Booking")
+                        .HasForeignKey("CarrierId");
+
                     b.HasOne("Core.Entities.Customer", null)
                         .WithMany("Booking")
                         .HasForeignKey("CustomerId")
@@ -262,12 +270,6 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.OrderPlaced", b =>
                 {
-                    b.HasOne("Core.Entities.Booking", null)
-                        .WithOne("OrdersPlaced")
-                        .HasForeignKey("Core.Entities.OrderPlaced", "BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Core.Entities.Carrier", null)
                         .WithMany("OrderPlaceds")
                         .HasForeignKey("CarrierId")

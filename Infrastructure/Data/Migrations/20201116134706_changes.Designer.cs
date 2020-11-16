@@ -3,14 +3,16 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201116134706_changes")]
+    partial class changes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,13 +146,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool>("isDelivered")
+                    b.Property<bool>("isDeleiverd")
                         .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookingId")
-                        .IsUnique();
 
                     b.HasIndex("CarrierId");
 
@@ -212,8 +211,6 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderPlacedId");
-
                     b.ToTable("Reviews");
                 });
 
@@ -262,24 +259,9 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.OrderPlaced", b =>
                 {
-                    b.HasOne("Core.Entities.Booking", null)
-                        .WithOne("OrdersPlaced")
-                        .HasForeignKey("Core.Entities.OrderPlaced", "BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Core.Entities.Carrier", null)
                         .WithMany("OrderPlaceds")
                         .HasForeignKey("CarrierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Entities.Review", b =>
-                {
-                    b.HasOne("Core.Entities.OrderPlaced", "OrdersPlaced")
-                        .WithMany()
-                        .HasForeignKey("OrderPlacedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

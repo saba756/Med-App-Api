@@ -11,7 +11,7 @@ namespace Core.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public bool isDeleiverd { get; set; }
+        public bool isDelivered { get; set; }
         [ForeignKey("Booking")]
         public int BookingId { get; set; }
         [ForeignKey("Carrier")]

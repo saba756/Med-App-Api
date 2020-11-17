@@ -11,15 +11,13 @@ namespace Core.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
-        [ForeignKey("Pharmacy")]
-        public int PharmacyId{ get; set; }
         public string MedicineName { get; set; }
         public string MedicineFormula { get; set; }
         public string CustomerAddress { get; set; }
         public DateTime? DateCreated { get; set; } = System.DateTime.Now;
         public DateTime?DateModified { get; set; } = System.DateTime.Now;
         public OrderPlaced OrdersPlaced { get; set; }
+        public Customer Customer { get; set; }
+        public Pharmacy Pharmacy { get; set; }
     }
 }

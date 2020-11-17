@@ -14,7 +14,7 @@ namespace Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Core.Entities.Booking", b =>
@@ -26,13 +26,13 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("CustomerAddress")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime?>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateModified")
+                    b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("MedicineFormula")
@@ -41,7 +41,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("MedicineName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("PharmacyId")
+                    b.Property<int?>("PharmacyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -100,10 +100,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime?>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateModified")
+                    b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -166,10 +166,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime?>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateModified")
+                    b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -247,17 +247,13 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Booking", b =>
                 {
-                    b.HasOne("Core.Entities.Customer", null)
+                    b.HasOne("Core.Entities.Customer", "Customer")
                         .WithMany("Booking")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
-                    b.HasOne("Core.Entities.Pharmacy", null)
+                    b.HasOne("Core.Entities.Pharmacy", "Pharmacy")
                         .WithMany("Booking")
-                        .HasForeignKey("PharmacyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PharmacyId");
                 });
 
             modelBuilder.Entity("Core.Entities.OrderPlaced", b =>

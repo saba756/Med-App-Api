@@ -19,7 +19,6 @@ namespace Core.Entities
         public string PhoneNo { get; set; }
         public DateTime? DateCreated { get; set; } = System.DateTime.Now;
         public DateTime? DateModified { get; set; } = System.DateTime.Now;
-        public ICollection<Booking> Booking { get; set; }
 
     }
 }

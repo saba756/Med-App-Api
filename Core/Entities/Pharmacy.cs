@@ -19,7 +19,7 @@ namespace Core.Entities
         public string Phone_No { get; set; }
         public DateTime? DateCreated { get; set; } = System.DateTime.Now;
         public DateTime? DateModified { get; set; } = System.DateTime.Now;
-        public ICollection<Booking> Booking { get; set; }
+       // public ICollection<Booking> Booking { get; set; }
 
     }
 }

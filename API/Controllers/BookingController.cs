@@ -21,12 +21,14 @@ namespace API.Controllers
         /// <returns></returns>
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        [HttpGet("medicines/{medname}")]
-        public async Task<IActionResult> getBookingByName(string medname)
+        [HttpGet("medName")]
+        public async Task<IActionResult> getBookingByName([FromQuery] string medcname)
         {
-            var bookingName = await _bookingService.GetBookingByUsername(medname);
-            return bookingName != null ? Ok(bookingName) : (IActionResult)NotFound();
+            var bookingName = await _bookingService.GetBookingByUsername(medcname);
+            //return bookingName != null ? Ok(bookingName) : (IActionResult)NotFound();
+            return Ok(bookingName);
         }
+
 
        
 

@@ -18,8 +18,8 @@ namespace Core.Entities
         public string MedicineName { get; set; }
         public string MedicineFormula { get; set; }
         public string CustomerAddress { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
+        public DateTime? DateCreated { get; set; } = System.DateTime.Now;
+        public DateTime?DateModified { get; set; } = System.DateTime.Now;
         public OrderPlaced OrdersPlaced { get; set; }
     }
 }

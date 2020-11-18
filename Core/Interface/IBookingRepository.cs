@@ -9,6 +9,6 @@ namespace Core.Interface
   public interface IBookingRepository :IGenericRepository<Booking>
     {
         Task<Booking>GetBookingByUsername(string medname);
-      
+        Task<IReadOnlyList<Booking>> GetBookingAsync();
     }
 }

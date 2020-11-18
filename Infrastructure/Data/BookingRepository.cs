@@ -17,6 +17,12 @@ namespace Infrastructure.Data
         {
             _dbContext = dbContext;
         }
+
+        public Task<IReadOnlyList<Booking>> GetBookingAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public  async Task<Booking> GetBookingByUsername(string medname)
         {
             return _dbContext.Bookings

@@ -8,7 +8,7 @@ namespace Core.Interface
 {
   public  interface IGenericRepository<TEntity> where TEntity : class
     {
-        IQueryable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetAll();
 
         Task<TEntity> GetById(int id);
 

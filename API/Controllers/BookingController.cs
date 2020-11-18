@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Entities;
 using Core.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,11 @@ namespace API.Controllers
         }
 
 
-       
+        [HttpGet]
+        public async Task<IEnumerable<Booking>> GetallAsync()
+        {
 
-    }
-}
+         return  await _bookingService.GetAll();
+            }
+} }
+    

@@ -28,9 +28,9 @@ namespace Infrastructure.Data
             await SaveChangesAsync();
         }
 
-        public System.Linq.IQueryable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return _dbContext.Set<TEntity>().AsNoTracking();
+            return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
         public async Task<TEntity> GetById(int id)

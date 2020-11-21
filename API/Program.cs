@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,8 @@ namespace API
                     var context = service.GetRequiredService<StoreContext>();
                     // it will update/create database with updated migration
                     await context.Database.MigrateAsync();
+                    var identityContext = service.GetRequiredService<AppIdentityDbContext>();
+                    await identityContext.Database.MigrateAsync();
                 }
                 catch (Exception ex)
                 {

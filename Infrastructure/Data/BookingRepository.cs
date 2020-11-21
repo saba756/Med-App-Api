@@ -25,7 +25,7 @@ namespace Infrastructure.Data
 
         public  async Task<Booking> GetBookingByUsername(string medname)
         {
-            return _dbContext.Bookings
+            return  _dbContext.Bookings
                   .Include(p => p.Customer)
                   .Include(p => p.Pharmacy)
                    .FirstOrDefault(p => p.MedicineName == medname);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Extensions;
 using Core.Interface;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,9 +32,14 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddDbContext<StoreContext>(options =>
-          options.UseMySql(_config.GetConnectionString("DefaultConnection")));
+            options.UseMySql(_config.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AppIdentityDbContext>(x =>
+            {
+                x.UseMySql(_config.GetConnectionString("IdentityConnection"));
+            });
+            services.AddApplicationService();
+            services.AddIdentityServices();
             services.AddSwaggerDocumentation();
             services.AddCors(opt =>
             {

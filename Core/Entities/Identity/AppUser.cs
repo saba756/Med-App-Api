@@ -8,8 +8,7 @@ namespace Core.Entities.Identity
 {
    public class AppUser: IdentityUser
     {
-
-        public string Email { get; set; }
+        public string DisplayName { get; set; }
         public Register Register { get; set; }
     }
 }

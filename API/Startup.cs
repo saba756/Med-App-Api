@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Extensions;
+using API.Helper;
+using AutoMapper;
 using Core.Interface;
 using Infrastructure.Data;
 using Infrastructure.Identity;
@@ -32,6 +34,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<StoreContext>(options =>
             options.UseMySql(_config.GetConnectionString("DefaultConnection")));
             services.AddDbContext<AppIdentityDbContext>(x =>
@@ -39,7 +42,7 @@ namespace API
                 x.UseMySql(_config.GetConnectionString("IdentityConnection"));
             });
             services.AddApplicationService();
-            services.AddIdentityServices();
+            services.AddIdentityServices(_config);
             services.AddSwaggerDocumentation();
             services.AddCors(opt =>
             {

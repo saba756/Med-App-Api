@@ -1,9 +1,9 @@
 D:\ScholMangment\MedApp-API\Core\bin\Debug\netstandard2.1\Core.deps.json
 D:\ScholMangment\MedApp-API\Core\bin\Debug\netstandard2.1\Core.dll
 D:\ScholMangment\MedApp-API\Core\bin\Debug\netstandard2.1\Core.pdb
+D:\ScholMangment\MedApp-API\Core\obj\Debug\netstandard2.1\Core.csprojAssemblyReference.cache
 D:\ScholMangment\MedApp-API\Core\obj\Debug\netstandard2.1\Core.AssemblyInfoInputs.cache
 D:\ScholMangment\MedApp-API\Core\obj\Debug\netstandard2.1\Core.AssemblyInfo.cs
 D:\ScholMangment\MedApp-API\Core\obj\Debug\netstandard2.1\Core.csproj.CoreCompileInputs.cache
 D:\ScholMangment\MedApp-API\Core\obj\Debug\netstandard2.1\Core.dll
 D:\ScholMangment\MedApp-API\Core\obj\Debug\netstandard2.1\Core.pdb
-D:\ScholMangment\MedApp-API\Core\obj\Debug\netstandard2.1\Core.csprojAssemblyReference.cache

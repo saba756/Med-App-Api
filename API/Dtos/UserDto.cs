@@ -8,6 +8,8 @@ namespace API.Dtos
     public class UserDto
     {
         public string Token { get; set; }
-        public RegisterDto Register { get; set; }
+        public string Displayname { get; set; }
+
+        public string Email { get; set; }
     }
 }

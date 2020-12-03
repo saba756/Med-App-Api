@@ -13,7 +13,6 @@ namespace API.Helper
         {
             CreateMap<Core.Entities.Identity.Register, RegisterDto>().ReverseMap();
            
-            CreateMap<RegisterDto, Core.Entities.Identity.Register>();
         }
 
     }

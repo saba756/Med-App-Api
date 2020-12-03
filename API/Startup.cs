@@ -48,27 +48,34 @@ namespace API
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
                 });
             });
+
+            services.AddMvc();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+           
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            
 
+            app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors("CorsPolicy");
             app.UseSwaggerDocumentation();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

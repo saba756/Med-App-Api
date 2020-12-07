@@ -6,6 +6,7 @@ using API.Dtos;
 using API.Errors;
 using API.Extensions;
 using AutoMapper;
+using Core.Dtos;
 using Core.Entities.Identity;
 using Core.Interface;
 using Microsoft.AspNetCore.Authorization;

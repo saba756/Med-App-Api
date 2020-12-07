@@ -37,10 +37,14 @@ namespace API
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<StoreContext>(options =>
             options.UseMySql(_config.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<AppIdentityDbContext>(x =>
-            {
-                x.UseMySql(_config.GetConnectionString("IdentityConnection"));
-            });
+            /* services.AddDbContext<AppIdentityDbContext>(x =>
+             {
+                 x.UseMySql(_config.GetConnectionString("IdentityConnection"));
+             });
+            */
+            // services.AddDbContext<StoreContext>();
+            services.AddDbContext<StoreContext>();
+
             services.AddApplicationService();
             services.AddIdentityServices(_config);
             services.AddSwaggerDocumentation();

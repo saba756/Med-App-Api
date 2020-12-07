@@ -1,5 +1,6 @@
 ﻿using API.Dtos;
 using AutoMapper;
+using Core.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

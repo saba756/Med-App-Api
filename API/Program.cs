@@ -31,8 +31,8 @@ namespace API
                     // it will update/create database with updated migration
                     await context.Database.MigrateAsync();
                     var userManager = service.GetRequiredService<UserManager<AppUser>>();
-                    //var identityContext = service.GetRequiredService<AppIdentityDbContext>();
-                    //await identityContext.Database.MigrateAsync();
+                    var identityContext = service.GetRequiredService<StoreContext>();
+                    await identityContext.Database.MigrateAsync();
                     await AppIdentityDbContextSeed.SeedUserAsync(userManager);
                 }
                 catch (Exception ex)

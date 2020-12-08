@@ -23,6 +23,7 @@ namespace API
     public class Startup
     {
         private readonly IConfiguration _config;
+
         public Startup(IConfiguration config)
         {
 
@@ -35,15 +36,24 @@ namespace API
         {
             services.AddControllers();
             services.AddAutoMapper(typeof(MappingProfiles));
-            services.AddDbContext<StoreContext>(options =>
-            options.UseMySql(_config.GetConnectionString("DefaultConnection")));
+
+            String[] connectionStrings = new String[1];
+            connectionStrings[0] =  _config.GetConnectionString("DefaultConnection");
+
+            //First register a custom made db context provider
+            services.AddTransient<StoreDbContextFactory>();
+            //Then use implementation factory to get the one you need
+            services.AddTransient(provider => provider.GetService<StoreDbContextFactory>().CreateDbContext(connectionStrings));
+
+            //(options =>
+            // options.UseMySql(_config.GetConnectionString("DefaultConnection")));
             /* services.AddDbContext<AppIdentityDbContext>(x =>
              {
                  x.UseMySql(_config.GetConnectionString("IdentityConnection"));
              });
             */
             // services.AddDbContext<StoreContext>();
-            services.AddDbContext<StoreContext>();
+            // services.AddDbContext<StoreContext>();
 
             services.AddApplicationService();
             services.AddIdentityServices(_config);

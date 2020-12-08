@@ -80,3 +80,9 @@ D:\ScholMangment\MedApp-API\API\obj\Debug\netcoreapp3.1\staticwebassets\API.Stat
 D:\ScholMangment\MedApp-API\API\obj\Debug\netcoreapp3.1\API.dll
 D:\ScholMangment\MedApp-API\API\obj\Debug\netcoreapp3.1\API.pdb
 D:\ScholMangment\MedApp-API\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
+D:\ScholMangment\MedApp-API\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.FileExtensions.dll
+D:\ScholMangment\MedApp-API\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Json.dll
+D:\ScholMangment\MedApp-API\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\ScholMangment\MedApp-API\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Physical.dll
+D:\ScholMangment\MedApp-API\API\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileSystemGlobbing.dll
+D:\ScholMangment\MedApp-API\API\bin\Debug\netcoreapp3.1\System.Text.Json.dll

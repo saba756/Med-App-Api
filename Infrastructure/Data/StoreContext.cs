@@ -10,11 +10,12 @@ namespace Infrastructure.Data
 {
    public class StoreContext : IdentityDbContext<AppUser>
     {
-       
+
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {
-        }
 
+        }
+    
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Carrier> Carriers { get; set; }
@@ -27,5 +28,9 @@ namespace Infrastructure.Data
             base.OnModelCreating(modelbuilder);
            
         }
+        //public static StoreContext Create()
+        //{
+        //    return new StoreContext();
+        //}
     }
 }

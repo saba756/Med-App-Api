@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20201208162409_mergeDBContext")]
-    partial class mergeDBContext
+    [Migration("20201211155829_mergeContext")]
+    partial class mergeContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

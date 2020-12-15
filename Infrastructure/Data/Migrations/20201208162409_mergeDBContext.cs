@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class mergeContext : Migration
+    public partial class mergeDBContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

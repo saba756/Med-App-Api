@@ -9,7 +9,6 @@ namespace Core.Entities.Identity
    public class AppUser: IdentityUser
     {
         public string DisplayName { get; set; }
-       // public string DisplayName { get; set; }
         public Register Register { get; set; }
     }
 }

@@ -66,11 +66,10 @@ namespace API.Controllers
                 return Unauthorized(new ApiResponse(401));
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
-         
+
             var res = new UserDto
             {
                 Token = _tokenService.CreateToken(user),
-                RefreshToken = _tokenService.GenerateRefreshToken(),
                 Displayname = user.DisplayName,
                 Email = user.Email
             };
@@ -108,7 +107,6 @@ namespace API.Controllers
             return new UserDto
             {
                 Token = _tokenService.CreateToken(user),
-                RefreshToken = _tokenService.GenerateRefreshToken(),
                 Displayname = user.DisplayName,
                 Email = user.Email
             };

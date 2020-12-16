@@ -7,14 +7,15 @@ using API.Helper;
 using AutoMapper;
 using Core.Interface;
 using Infrastructure.Data;
-using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -37,23 +38,11 @@ namespace API
             services.AddControllers();
             services.AddAutoMapper(typeof(MappingProfiles));
 
-            String[] connectionStrings = new String[1];
-            connectionStrings[0] =  _config.GetConnectionString("DefaultConnection");
 
-            //First register a custom made db context provider
-            services.AddTransient<StoreDbContextFactory>();
-            //Then use implementation factory to get the one you need
-            services.AddTransient(provider => provider.GetService<StoreDbContextFactory>().CreateDbContext(connectionStrings));
 
-            //(options =>
-            // options.UseMySql(_config.GetConnectionString("DefaultConnection")));
-            /* services.AddDbContext<AppIdentityDbContext>(x =>
-             {
-                 x.UseMySql(_config.GetConnectionString("IdentityConnection"));
-             });
-            */
-            // services.AddDbContext<StoreContext>();
-            // services.AddDbContext<StoreContext>();
+            services.AddDbContext<StoreContext>(options =>
+           options.UseMySql(_config.GetConnectionString("DefaultConnection")));
+
 
             services.AddApplicationService();
             services.AddIdentityServices(_config);
@@ -65,6 +54,7 @@ namespace API
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
                 });
             });
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMvc();
 

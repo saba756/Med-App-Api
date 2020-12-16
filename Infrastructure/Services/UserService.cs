@@ -1,6 +1,5 @@
 ﻿using API.Dtos;
 using Core.Dtos;
-using Core.Entities.Identity;
 using Core.Interface;
 using Infrastructure.Data;
 using System;

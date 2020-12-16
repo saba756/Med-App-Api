@@ -3,14 +3,16 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201215141719_UpdatedColumnname")]
+    partial class UpdatedColumnname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,8 +283,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("PhoneNo")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("ZipCode")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -12,7 +12,6 @@ namespace API.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<Core.Entities.Identity.Register, RegisterDto>().ReverseMap();
            
         }
 

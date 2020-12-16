@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Core.Entities.Identity;
+
 using Infrastructure.Data;
-using Infrastructure.Identity;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,10 +30,10 @@ namespace API
                    
                     // it will update/create database with updated migration
                     await context.Database.MigrateAsync();
-                    var userManager = service.GetRequiredService<UserManager<AppUser>>();
+              
                     var identityContext = service.GetRequiredService<StoreContext>();
                     await identityContext.Database.MigrateAsync();
-                    await AppIdentityDbContextSeed.SeedUserAsync(userManager);
+                 
                 }
                 catch (Exception ex)
                 {

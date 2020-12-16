@@ -2,119 +2,98 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Dtos;
-using API.Errors;
-using API.Extensions;
 using AutoMapper;
 using Core.Dtos;
-using Core.Entities.Identity;
+using Core.Entities;
 using Core.Interface;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+
     public class AccountController : BaseAPIController
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly ITokenService _tokenService;
+        private readonly IHttpContextAccessor httpContextAccessor;
+
+        private readonly IAuthRepository _repo;
+        private readonly ITokenService _token;
         private readonly IMapper _mapper;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            ITokenService tokenService,
-             IMapper mapper
-           )
+        public AccountController(IHttpContextAccessor httpContextAccessor, IAuthRepository repo , ITokenService token, IMapper mapper
+            )
         {
-            _tokenService = tokenService;
-            _signInManager = signInManager;
-            _userManager = userManager;
+            this.httpContextAccessor = httpContextAccessor;
+            _repo = repo;
+            _token = token;
             _mapper = mapper;
-
         }
-       
-        [HttpGet("address")]
-        public async Task<ActionResult<AddressDto>> GetUserAddress()
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterDto  registerDto)
         {
-            var user = await _userManager.
-                FindUserByClaimPrincipalWithRegisterAsync(HttpContext.User);
 
-            return new AddressDto
+            registerDto.Email = registerDto.Email.ToLower();
+            if (await _repo.UserExist(registerDto.Email))
+                return BadRequest("user email already exist");
+            var userToCreate = new User
             {
-                Address = user.Register.Address,
-                City = user.Register.City,
-                ZipCode = user.Register.ZipCode,
-                FirstName = user.Register.FirstName,
-                LastName = user.Register.LastName,
-                PhoneNo = user.Register.PhoneNo
-            };
-                
-
-        }
-        [HttpGet("emailexists")]
-        public async Task<ActionResult<bool>> CheckEmailExistAsync([FromQuery] string email)
-        {
-            return await _userManager.FindByEmailAsync(email) != null;
-        }
-        [ProducesResponseType(200)]
-        [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
-        {
-            
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            if (user == null)
-                return Unauthorized(new ApiResponse(401));
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-            if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
-
-            var res = new UserDto
-            {
-                Token = _tokenService.CreateToken(user),
-                Displayname = user.DisplayName,
-                Email = user.Email
-            };
-            return  Ok(res);
-        }        [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
-        {
-            if (CheckEmailExistAsync(registerDto.Email).Result.Value)
-            {
-                return new BadRequestObjectResult(new ApiValidationErrorResponse
-                {
-                    Errors = new[] { "Email address is in use" }
-                });
-            }
-            var register = new RegisterDto
-            {
-                City = registerDto.City,
+                Email = registerDto.Email,
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName,
                 Address = registerDto.Address,
                 PhoneNo = registerDto.PhoneNo,
+                City = registerDto.City,
                 ZipCode = registerDto.ZipCode
             };
-
-            var user = new AppUser
+            var revoked_by_ip = (this.httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()); 
+            var userToken = new UserToken
             {
-                DisplayName = registerDto.DisplayName,
-                Register = _mapper.Map<RegisterDto, Register>(register),
+                User = userToCreate,
+                RefreshToken = _token.GenerateRefreshToken(),
+                RefreshTokenExpiryTime= DateTime.UtcNow.AddMonths(1),
+                revoked_by_ip = revoked_by_ip
+            }; 
+
+            var createdUser = await _repo.Register(userToCreate, registerDto.Password);
+            await _token.CreateRefreshToken(userToken);
+            return Ok(new RegisterResponseDtos
+            {
                 Email = registerDto.Email,
-                UserName = registerDto.Email
-            };
-
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400));
-            return new UserDto
-            {
-                Token = _tokenService.CreateToken(user),
-                Displayname = user.DisplayName,
-                Email = user.Email
-            };
+                AccessToken = _token.CreateToken(userToCreate),
+                RefreshToken = _token.GenerateRefreshToken(),
+                RefreshTokenExpiryTime = DateTime.UtcNow.AddMonths(1),
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                Address = registerDto.Address,
+                PhoneNo = registerDto.PhoneNo,
+                City = registerDto.City,
+                ZipCode = registerDto.ZipCode,
+                revoked_by_ip = userToken.revoked_by_ip
+            }
+            );
+            
         }
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Content(this.httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString());
+        }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
 
+            var user = await _repo.Login(loginDto.Email.ToLower(), loginDto.Password);
 
-
+            if (user == null)
+                return Unauthorized();
+            var res = new LoginResponseDto
+            {
+                Email = loginDto.Email,
+                AccessToken = _token.CreateToken(user),
+                RefreshToken= _token.GenerateRefreshToken()
+            };
+            return Ok(res);
+        }
     }
 }

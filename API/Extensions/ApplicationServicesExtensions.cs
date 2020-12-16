@@ -17,6 +17,7 @@ namespace API.Extensions
         {
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.Configure<ApiBehaviorOptions>(options =>
             {

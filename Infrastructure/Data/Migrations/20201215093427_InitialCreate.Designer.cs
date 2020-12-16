@@ -3,14 +3,16 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201215093427_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,9 +256,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("City")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<DateTime?>("DateCreated")
                         .HasColumnType("datetime(6)");
 
@@ -281,31 +280,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("PhoneNo")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("ZipCode")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Core.Entities.UserToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("revoked_by_ip")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserTokens");
                 });
 
             modelBuilder.Entity("Core.Entities.Booking", b =>
@@ -348,15 +325,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.Review", null)
                         .WithMany("Reviews")
                         .HasForeignKey("ReviewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Entities.UserToken", b =>
-                {
-                    b.HasOne("Core.Entities.User", "User")
-                        .WithOne("UserToken")
-                        .HasForeignKey("Core.Entities.UserToken", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

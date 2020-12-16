@@ -1,25 +1,45 @@
-﻿using Core.Entities.Identity;
+﻿
+using Core.Entities;
 using Core.Interface;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
     public class TokenService : ITokenService
     {
+        private readonly StoreContext _context;
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration config)
+        public TokenService(IConfiguration config, StoreContext context )
         {
+            _context = context;
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"]));
         }
-        public string CreateToken(AppUser user)
+
+        public async  Task<UserToken> CreateRefreshToken( UserToken user)
+        {
+           
+                //user.RefreshToken = GenerateRefreshToken();
+                //user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMonths(1);
+                await _context.UserTokens.AddAsync(user);
+                await _context.SaveChangesAsync();
+           
+            return user;
+            //return true;
+        }
+
+        public string CreateToken(User user)
         {
             var claims = new List<Claim>
                 {
@@ -39,5 +59,17 @@ namespace Infrastructure.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
     }
 }
+    

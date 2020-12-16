@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Core.Entities.Identity
+namespace Core.Dtos
 {
-   public class Register
+    public class RegisterResponseDtos
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
@@ -15,8 +15,13 @@ namespace Core.Entities.Identity
         public string ZipCode { get; set; }
         public string PhoneNo { get; set; }
         [Required]
-        public string AppUserId { get; set; }
-        public AppUser AppUser { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
+        
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
+        public string revoked_by_ip { get; set; }
 
     }
 }

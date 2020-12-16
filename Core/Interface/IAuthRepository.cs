@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Interface
 {
-   public interface IAuthRepository
+   public interface IAuthRepository : IGenericRepository<User>
     {
         Task<User> Register(User user, string password);
         Task<User> Login(string email, string password);

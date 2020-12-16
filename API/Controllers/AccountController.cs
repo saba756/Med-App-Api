@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Dtos;
 using AutoMapper;
 using Core.Dtos;
 using Core.Entities;
@@ -70,7 +71,16 @@ namespace API.Controllers
                 revoked_by_ip = userToken.revoked_by_ip
             }
             );
-            
+
+        }
+        
+        [HttpGet("address/{id}")]
+        public async Task<ActionResult<AddressDto>> GetUserAddress([FromRoute]  int id)
+        {
+            var user = await _repo.GetById(id);
+            var res = _mapper.Map<User, AddressDto>(user);
+            return Ok(res);
+           
         }
 
         [HttpGet]

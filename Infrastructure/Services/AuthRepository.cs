@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class AuthRepository : IAuthRepository
+  
+    public class AuthRepository : GenericRepository<User>, IAuthRepository 
 
     {
         private readonly StoreContext _context;
-        public AuthRepository(StoreContext context)
+        public AuthRepository(StoreContext context): base(context)
         {
             _context = context;
         }

@@ -44,6 +44,7 @@ namespace Infrastructure.Services
             var claims = new List<Claim>
                 {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("role",user.UserType)
                  //new Claim(JwtRegisteredClaimNames.GivenName, user.DisplayName)
             };
             var cred = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

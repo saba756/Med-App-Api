@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
+using API.Helper;
+using API.Helper.Enums;
 using AutoMapper;
 using Core.Dtos;
 using Core.Entities;
 using Core.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -73,7 +76,7 @@ namespace API.Controllers
             );
 
         }
-        
+        [Authorize(Policy = "Pharmacy")]
         [HttpGet("address/{id}")]
         public async Task<ActionResult<AddressDto>> GetUserAddress([FromRoute]  int id)
         {

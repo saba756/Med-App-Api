@@ -1,4 +1,6 @@
 ﻿
+using API.Helper;
+using API.Helper.Enums;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -29,8 +31,15 @@ namespace API.Extensions
                         ValidateAudience = false
                     };
                 });
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy(roles.Pharmacy.ToString(), Policies.PharmacyPolicy());
+                config.AddPolicy(roles.Customer.ToString(), Policies.CustomerPolicy());
+                config.AddPolicy(roles.DeliveryBoy.ToString(), Policies.DeliveryBoyPolicy());
+            });
             return services;
         }
+
         
 }
 

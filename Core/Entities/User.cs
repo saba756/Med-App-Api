@@ -16,6 +16,7 @@ namespace Core.Entities
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string PhoneNo { get; set; }
+        public string UserType { get; set; }
         public DateTime? DateCreated { get; set; } = System.DateTime.Now;
         public DateTime? DateModified { get; set; } = System.DateTime.Now;
         public UserToken UserToken { get; set; }

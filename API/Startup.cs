@@ -54,11 +54,11 @@ namespace API
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
                 });
             });
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("RequireManagerOnly", policy =>
-            //          policy.RequireRole("Pharmcy", "Customer", "DeliveryBoy"));
-            //});
+           /* services.AddAuthorization(options =>
+            {
+               options.AddPolicy("RequireManagerOnly", policy =>
+                     policy.RequireRole("Pharmcy", "Customer", "DeliveryBoy"));
+            });*/
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMvc();

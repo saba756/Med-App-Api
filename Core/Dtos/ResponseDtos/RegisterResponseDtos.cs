@@ -21,6 +21,7 @@ namespace Core.Dtos
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
+        public string UserType { get; set; }
         public string revoked_by_ip { get; set; }
 
     }

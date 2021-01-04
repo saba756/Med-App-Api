@@ -46,7 +46,9 @@ namespace API.Controllers
                 Address = registerDto.Address,
                 PhoneNo = registerDto.PhoneNo,
                 City = registerDto.City,
-                ZipCode = registerDto.ZipCode
+                ZipCode = registerDto.ZipCode,
+                UserType= registerDto.UserType
+               
             };
             var revoked_by_ip = (this.httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()); 
             var userToken = new UserToken
@@ -54,7 +56,8 @@ namespace API.Controllers
                 User = userToCreate,
                 RefreshToken = _token.GenerateRefreshToken(),
                 RefreshTokenExpiryTime= DateTime.UtcNow.AddMonths(1),
-                revoked_by_ip = revoked_by_ip
+                revoked_by_ip = revoked_by_ip,
+               
             }; 
 
             var createdUser = await _repo.Register(userToCreate, registerDto.Password);
@@ -71,6 +74,7 @@ namespace API.Controllers
                 PhoneNo = registerDto.PhoneNo,
                 City = registerDto.City,
                 ZipCode = registerDto.ZipCode,
+                UserType= registerDto.UserType,
                 revoked_by_ip = userToken.revoked_by_ip
             }
             );
@@ -104,7 +108,8 @@ namespace API.Controllers
             {
                 Email = loginDto.Email,
                 AccessToken = _token.CreateToken(user),
-                RefreshToken= _token.GenerateRefreshToken()
+                RefreshToken= _token.GenerateRefreshToken(),
+                UserType= user.UserType
             };
             return Ok(res);
         }

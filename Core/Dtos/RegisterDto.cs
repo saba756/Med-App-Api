@@ -14,6 +14,7 @@ namespace Core.Dtos
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string PhoneNo { get; set; }
+        public string UserType { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }

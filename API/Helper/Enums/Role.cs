@@ -16,7 +16,6 @@ namespace API.Helper.Enums
             [Description("Delivery boy")]
             DeliveryBoy = 3,
            
-
         }
     
 }

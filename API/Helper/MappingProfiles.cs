@@ -13,7 +13,12 @@ namespace API.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<User, RegisterResponseDtos>();
+            CreateMap<User, RegisterResponseDtos>()
+                .ForMember(des => des.RefreshToken, opt => opt.Ignore())
+                .ForMember(des => des.AccessToken, opt => opt.Ignore())
+                .ForMember(des => des.RefreshTokenExpiryTime, opt => opt.Ignore())
+                .ForMember(des => des.revoked_by_ip, opt => opt.Ignore());
+
             CreateMap<RegisterDto, User>();
             CreateMap<User, AddressDto>();
         }

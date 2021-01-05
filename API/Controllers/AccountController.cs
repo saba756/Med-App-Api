@@ -51,17 +51,11 @@ namespace API.Controllers
 
             var createdUser = await _repo.Register(userToCreate, registerDto.Password);
             await _token.CreateRefreshToken(userToken);
-            var res=  _mapper.Map<User, RegisterResponseDtos>(userToCreate, opt =>
-            {
-                opt.AfterMap((src, respdtos) =>
-                {
-                    respdtos.revoked_by_ip = revoked_by_ip;
-                    respdtos.AccessToken = _token.CreateToken(userToCreate);
-                    respdtos.RefreshToken = _token.GenerateRefreshToken();
-                    respdtos.RefreshTokenExpiryTime = DateTime.UtcNow.AddMonths(1);
-                    
-            });
-            });
+            var res = _mapper.Map<User, RegisterResponseDtos>(userToCreate);
+            res.RefreshToken = _token.GenerateRefreshToken();
+            res.AccessToken = _token.CreateToken(userToCreate);
+            res.revoked_by_ip = revoked_by_ip;
+           
             return Ok(res);
         }
         [Authorize(Policy = "Pharmacy")]

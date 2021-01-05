@@ -10,6 +10,7 @@ namespace Core.Interface
    public  interface ITokenService
     {
         string CreateToken(User user);
+        Task<UserToken> CreateNewRefreshToken(UserToken userToken);
         string GenerateRefreshToken();
         Task<UserToken> CreateRefreshToken(UserToken userToken);
     }

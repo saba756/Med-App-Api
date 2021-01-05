@@ -14,6 +14,7 @@ namespace API.Helper
         public MappingProfiles()
         {
             CreateMap<User, RegisterResponseDtos>();
+            CreateMap<RegisterDto, User>();
             CreateMap<User, AddressDto>();
         }
 

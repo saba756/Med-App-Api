@@ -2,6 +2,7 @@
 using Core.Entities;
 using Core.Interface;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -18,13 +19,26 @@ namespace Infrastructure.Services
     public class TokenService : ITokenService
     {
         private readonly StoreContext _context;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration config, StoreContext context )
+        public TokenService(IHttpContextAccessor httpContextAccessor,IConfiguration config, StoreContext context )
         {
+            this.httpContextAccessor = httpContextAccessor;
             _context = context;
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"]));
+        }
+
+        public async Task<UserToken> CreateNewRefreshToken(UserToken userToken)
+        {
+            var revoked_by_ip = (this.httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString());
+            userToken.revoked_by_ip = revoked_by_ip;
+            userToken.RefreshToken = GenerateRefreshToken();
+            userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddMonths(1);
+            await _context.UserTokens.AddAsync(userToken);
+            await _context.SaveChangesAsync();
+            return userToken;
         }
 
         public async  Task<UserToken> CreateRefreshToken( UserToken user)

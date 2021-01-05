@@ -16,8 +16,7 @@ namespace Core.Dtos
         public string PhoneNo { get; set; }
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
-        
+        public string Email { get; set; }     
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }

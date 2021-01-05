@@ -38,18 +38,7 @@ namespace API.Controllers
             registerDto.Email = registerDto.Email.ToLower();
             if (await _repo.UserExist(registerDto.Email))
                 return BadRequest("user email already exist");
-            var userToCreate = new User
-            {
-                Email = registerDto.Email,
-                FirstName = registerDto.FirstName,
-                LastName = registerDto.LastName,
-                Address = registerDto.Address,
-                PhoneNo = registerDto.PhoneNo,
-                City = registerDto.City,
-                ZipCode = registerDto.ZipCode,
-                UserType= registerDto.UserType
-               
-            };
+            var userToCreate = _mapper.Map<RegisterDto, User>(registerDto);
             var revoked_by_ip = (this.httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()); 
             var userToken = new UserToken
             {
@@ -57,28 +46,23 @@ namespace API.Controllers
                 RefreshToken = _token.GenerateRefreshToken(),
                 RefreshTokenExpiryTime= DateTime.UtcNow.AddMonths(1),
                 revoked_by_ip = revoked_by_ip,
-               
-            }; 
+
+            };  
 
             var createdUser = await _repo.Register(userToCreate, registerDto.Password);
             await _token.CreateRefreshToken(userToken);
-            return Ok(new RegisterResponseDtos
+            var res=  _mapper.Map<User, RegisterResponseDtos>(userToCreate, opt =>
             {
-                Email = registerDto.Email,
-                AccessToken = _token.CreateToken(userToCreate),
-                RefreshToken = _token.GenerateRefreshToken(),
-                RefreshTokenExpiryTime = DateTime.UtcNow.AddMonths(1),
-                FirstName = registerDto.FirstName,
-                LastName = registerDto.LastName,
-                Address = registerDto.Address,
-                PhoneNo = registerDto.PhoneNo,
-                City = registerDto.City,
-                ZipCode = registerDto.ZipCode,
-                UserType= registerDto.UserType,
-                revoked_by_ip = userToken.revoked_by_ip
-            }
-            );
-
+                opt.AfterMap((src, respdtos) =>
+                {
+                    respdtos.revoked_by_ip = revoked_by_ip;
+                    respdtos.AccessToken = _token.CreateToken(userToCreate);
+                    respdtos.RefreshToken = _token.GenerateRefreshToken();
+                    respdtos.RefreshTokenExpiryTime = DateTime.UtcNow.AddMonths(1);
+                    
+            });
+            });
+            return Ok(res);
         }
         [Authorize(Policy = "Pharmacy")]
         [HttpGet("address/{id}")]

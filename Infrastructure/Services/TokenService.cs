@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -30,13 +31,15 @@ namespace Infrastructure.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"]));
         }
 
-        public async Task<UserToken> CreateNewRefreshToken(UserToken userToken)
+       
+        public async Task<UserToken> RevokeNewRefreshToken(UserToken userToken)
         {
+            var updateUser = _context.UserTokens.SingleOrDefault(user => user.User.Email == userToken.User.Email);
             var revoked_by_ip = (this.httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString());
             userToken.revoked_by_ip = revoked_by_ip;
-            userToken.RefreshToken = GenerateRefreshToken();
             userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddMonths(1);
-            await _context.UserTokens.AddAsync(userToken);
+            userToken.Id = updateUser.Id;
+            _context.UserTokens.Update(userToken);
             await _context.SaveChangesAsync();
             return userToken;
         }
@@ -65,7 +68,7 @@ namespace Infrastructure.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
+                Expires = DateTime.Now.AddSeconds(5),
                 SigningCredentials = cred,
                 Issuer = _config["Token:Issuer"]
 

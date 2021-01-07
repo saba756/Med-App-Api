@@ -20,6 +20,7 @@ namespace API.Helper
                 .ForMember(des => des.revoked_by_ip, opt => opt.Ignore());
 
             CreateMap<RegisterDto, User>();
+            CreateMap<TokenDto, User>();
             CreateMap<User, AddressDto>();
         }
 

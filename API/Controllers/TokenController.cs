@@ -26,29 +26,29 @@ namespace API.Controllers
             _mapper = mapper;
 
         }
-        [HttpPost]
-        [Route("refresh")]
-        public IActionResult Refresh(RegisterDto registerDto)
+        [HttpPost("refresh")]
+        public IActionResult Refresh(TokenDto tokenDto)
         {
-            var userToCreate = _mapper.Map<User>(registerDto);
-
-            var res = new LoginResponseDto
+            if(tokenDto.AccessToken == null  || tokenDto.RefreshToken == null)
             {
-                Email = registerDto.Email,
-                AccessToken = _tokenService.CreateToken(userToCreate),
-                RefreshToken = _tokenService.GenerateRefreshToken(),
-                UserType = registerDto.UserType
-            };
+                return BadRequest("Invalid client request");
+            }
+
+           var userToCreate = _mapper.Map<User>(tokenDto);
+            tokenDto.AccessToken = _tokenService.CreateToken(userToCreate);
+            tokenDto.RefreshToken = _tokenService.GenerateRefreshToken();
             var userToken = new UserToken
             {
-                User = userToCreate       
+                User = userToCreate,
+                RefreshToken = tokenDto.RefreshToken
             };
-            _tokenService.CreateNewRefreshToken(userToken);
+            _tokenService.RevokeNewRefreshToken(userToken);
+           
             if (userToCreate == null || userToken.RefreshToken == null || userToken.RefreshTokenExpiryTime <= DateTime.Now)
             {
                 return BadRequest("Invalid client request");
             }
-            return Ok(res);
+            return Ok(userToken);
         }
         }
 }
